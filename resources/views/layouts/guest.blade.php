@@ -16,7 +16,7 @@
                 <li><a href="/" class="hover:text-blue-500">Beranda</a></li>
                 <li><a href="/profil" class="hover:text-blue-500">Profil</a></li>
                 <li><a href="/visi-misi" class="hover:text-blue-500">Visi & Misi</a></li>
-                <li><a href="/berita" class="hover:text-blue-500">Berita</a></li>
+                <li><a href="{{ route('berita.publik') }}" class="hover:text-blue-500">Berita</a></li>
                 <li><a href="/kontak" class="hover:text-blue-500">Kontak</a></li>
             </ul>
         </div>

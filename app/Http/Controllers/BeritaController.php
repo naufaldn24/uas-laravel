@@ -31,7 +31,7 @@ class BeritaController extends Controller
         ]);
 
         Berita::create($request->all());
-        
+
         return redirect()->route('berita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
 
@@ -64,4 +64,19 @@ class BeritaController extends Controller
 
         return redirect()->route('berita.index')->with('success', 'Berita berhasil dihapus.');
     }
+
+    // ✅ Tambahan: untuk menampilkan berita publik ke frontend
+    public function publicIndex()
+    {
+        $beritas = Berita::with('kategori')->latest()->paginate(4);
+        return view('frontend.berita', compact('beritas'));
+    }
+
+
+    public function showPublic($slug)
+    {
+        $berita = Berita::where('slug', $slug)->with('kategori')->firstOrFail();
+        return view('frontend.berita-show', compact('berita'));
+    }
+    
 }
