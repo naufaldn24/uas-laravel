@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Auth; // Tambahan untuk logout
 
 // ✅ Halaman utama publik
 Route::get('/', function () {
@@ -37,6 +38,12 @@ Route::middleware('auth')->group(function () {
         'berita' => 'berita'
     ]);
 });
+
+// ✅ Route logout manual (POST)
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');
 
 // ✅ Autentikasi Laravel Breeze / Jetstream
 require __DIR__ . '/auth.php';

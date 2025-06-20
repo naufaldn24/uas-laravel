@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Berita; // ⬅️ Tambahkan ini
+use App\Models\Berita; // ✅ Tambahan model binding
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
+    public const HOME = '/dashboard'; // ✅ Redirect setelah login
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -28,7 +28,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-        // ✅ Tambahkan baris ini
+
+        // ✅ Route model binding: beritum -> App\Models\Berita
         Route::model('beritum', Berita::class);
 
         $this->routes(function () {
