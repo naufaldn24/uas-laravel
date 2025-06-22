@@ -65,6 +65,32 @@
                 </select>
             </div>
 
+            {{--Gambar--}}
+            <form action="{{ route('berita.update', $berita->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('PUT') {{-- Penting untuk metode update --}}
+
+    <div class="mb-3">
+        <label for="image" class="form-label">Gambar Berita</label>
+        <input type="file" class="form-control" id="image" name="image">
+        @error('image')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+
+        @if ($berita->image)
+            <div class="mt-2">
+                <p>Gambar Saat Ini:</p>
+                <img src="{{ asset('storage/' . $berita->image) }}" alt="Gambar Berita" style="max-width: 200px;">
+                <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" name="remove_image" id="remove_image" value="1">
+                    <label class="form-check-label" for="remove_image">Hapus Gambar</label>
+                </div>
+            </div>
+        @endif
+    </div>
+    </form>
+    
+
             {{-- Tombol --}}
             <div class="flex justify-end mt-6">
                 <button type="submit"

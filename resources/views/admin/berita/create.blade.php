@@ -15,8 +15,8 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('berita.store') }}">
-            @csrf
+        <form method="POST" action="{{ route('berita.store') }}" enctype="multipart/form-data">
+        @csrf
 
             {{-- Judul --}}
             <div>
@@ -63,6 +63,17 @@
                     @endforeach
                 </select>
             </div>
+
+            {{--Gambar--}}
+            <div class="mt-4">
+                <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Gambar Berita</label>
+                <input type="file" class="form-control" id="image" name="image">
+                {{-- Error message untuk gambar, ini penting agar tampil jika ada validasi gagal --}}
+                @error('image')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+    
 
             {{-- Tombol --}}
             <div class="flex justify-end mt-6">

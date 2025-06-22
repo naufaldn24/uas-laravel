@@ -24,16 +24,54 @@
                         <th class="px-4 py-2">Penulis</th>
                         <th class="px-4 py-2">Tanggal</th>
                         <th class="px-4 py-2">Kategori</th>
+                        <th class="px-4 py-2">Gambar</th>
                         <th class="px-4 py-2 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-100">
-                    @foreach ($beritas as $berita)
+                @foreach ($beritas as $berita)
+        <tr>
+            <td>{{ $berita->judul }}</td>
+            <td>{{ $berita->penulis }}</td>
+            <td>{{ $berita->tanggal }}</td>
+            <td>{{ $berita->kategori->nama ?? 'N/A' }}</td> {{-- Pastikan ini 'nama' atau 'nama_kategori' sesuai kolom kategori Anda --}}
+            <<td>
+                @if ($berita->image)
+                    <img src="{{ asset('storage/' . $berita->image) }}" alt="Gambar Berita" style="max-width: 100px; max-height: 80px;">
+                @else
+                    Tidak Ada Gambar
+                @endif
+            </td>
+            <td>
+                {{-- Ini adalah kolom Aksi Anda --}}
+                <a href="{{ route('berita.edit', $berita->id) }}" class="btn btn-sm btn-info">Edit</a>
+                <form action="{{ route('berita.destroy', $berita->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus berita ini?')" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button button type="submit" onclick="return confirm('Yakin ingin menghapus berita ini?')"
+                    class="text-red-500 hover:underline">Hapus</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+
+                    <!-- @foreach ($beritas as $berita)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-4 py-2">{{ $berita->judul }}</td>
                             <td class="px-4 py-2">{{ $berita->penulis }}</td>
                             <td class="px-4 py-2">{{ $berita->tanggal }}</td>
                             <td class="px-4 py-2">{{ $berita->kategori->nama ?? '-' }}</td>
+                            <td>{{ $berita->kategori->nama_kategori ?? 'N/A' }}</td> {{-- Asumsi ada relasi kategori --}}
+                            <td>
+                @if ($berita->image)
+                    <img src="{{ asset('storage/' . $berita->image) }}" alt="Gambar Berita" style="max-width: 100px; max-height: 80px;">
+                @else
+                    Tidak Ada Gambar
+                @endif
+            </td><td>
+                </td>
+        </tr>
+
                             <td class="px-4 py-2 text-center space-x-2">
                                 <a href="{{ route('berita.edit', $berita->id) }}" class="text-blue-600 hover:underline">Edit</a>
                                 <form action="{{ route('berita.destroy', $berita->id) }}" method="POST" class="inline">
@@ -43,7 +81,7 @@
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                    @endforeach -->
                 </tbody>
             </table>
         </div>

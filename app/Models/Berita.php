@@ -11,7 +11,7 @@ class Berita extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['judul', 'slug', 'isi', 'penulis', 'tanggal', 'kategori_id'];
+    protected $fillable = ['judul', 'slug', 'isi', 'penulis', 'tanggal', 'kategori_id', 'image'];
 
     protected static function booted()
     {
