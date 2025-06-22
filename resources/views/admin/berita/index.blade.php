@@ -17,43 +17,60 @@
                 + Tambah Berita
             </a>
 
-            <table class="min-w-full divide-y divide-gray-200 border border-gray-300 shadow-sm">
+            <div class="overflow-x-auto"> {{-- Tambahkan div ini untuk scroll horizontal jika tabel terlalu lebar --}}
+            <table class="min-w-full divide-y divide-gray-200 border border-gray-200 sm">
                 <thead class="bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    <tr>
-                        <th class="px-4 py-2">Judul</th>
-                        <th class="px-4 py-2">Penulis</th>
-                        <th class="px-4 py-2">Tanggal</th>
-                        <th class="px-4 py-2">Kategori</th>
-                        <th class="px-4 py-2">Gambar</th>
-                        <th class="px-4 py-2 text-center">Aksi</th>
-                    </tr>
+                <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Judul</th> {{-- border-r untuk batas kanan --}}
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Penulis</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Tanggal</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Kategori</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-gray-200">Gambar</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th> {{-- Tidak perlu border-r di kolom terakhir --}}
+            </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-100">
+                <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($beritas as $berita)
-        <tr>
-            <td>{{ $berita->judul }}</td>
-            <td>{{ $berita->penulis }}</td>
-            <td>{{ $berita->tanggal }}</td>
-            <td>{{ $berita->kategori->nama ?? 'N/A' }}</td> {{-- Pastikan ini 'nama' atau 'nama_kategori' sesuai kolom kategori Anda --}}
-            <<td>
-                @if ($berita->image)
-                    <img src="{{ asset('storage/' . $berita->image) }}" alt="Gambar Berita" style="max-width: 100px; max-height: 80px;">
-                @else
-                    Tidak Ada Gambar
-                @endif
-            </td>
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200">{{ $berita->judul }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200">{{ $berita->penulis }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200">{{ $berita->tanggal }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200">{{ $berita->kategori->nama ?? 'N/A' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200">
+                        @if ($berita->image)
+                            <img src="{{ asset('storage/' . $berita->image) }}" alt="Gambar Berita" style="max-width: 100px; max-height: 80px;">
+                        @else
+                            Tidak Ada Gambar
+                        @endif
+                    </td>
+                    {{-- Ini adalah kolom Aksi Anda --}}
+                    <td class="px-2 py-4 whitespace-nowrap text-center text-sm font-medium">
+        {{-- Tombol EDIT --}}
+        <a href="{{ route('berita.edit', $berita->id) }}" class="text-blue-600 hover:text-blue-900 inline-flex items-center">
+            <i class="fas fa-edit mr-1"></i> {{-- Icon Edit --}}
+            Edit {{-- Anda bisa hapus teks 'Edit' jika ingin hanya icon --}}
+        </a>
+
+        {{-- Tombol HAPUS --}}
+        <form action="{{ route('berita.destroy', $berita->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus berita ini?')" class="inline ml-2">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="text-red-600 hover:text-red-900 inline-flex items-center">
+                <i class="fas fa-trash-alt mr-1"></i> {{-- Icon Hapus --}}
+                Hapus {{-- Anda bisa hapus teks 'Hapus' jika ingin hanya icon --}}
+            </button>
+        </form>
+    </td>
+                </tr>
             <td>
-                {{-- Ini adalah kolom Aksi Anda --}}
-                <a href="{{ route('berita.edit', $berita->id) }}" class="btn btn-sm btn-info">Edit</a>
-                <form action="{{ route('berita.destroy', $berita->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus berita ini?')" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button button type="submit" onclick="return confirm('Yakin ingin menghapus berita ini?')"
-                    class="text-red-500 hover:underline">Hapus</button>
-                </form>
-            </td>
-        </tr>
+                
     @endforeach
+    {{-- Jika tidak ada data --}}
+            @if($beritas->isEmpty())
+                <tr>
+                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">Belum ada berita.</td>
+                </tr>
+            @endif
 
                     <!-- @foreach ($beritas as $berita)
                         <tr class="hover:bg-gray-50 transition">
