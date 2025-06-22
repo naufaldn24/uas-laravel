@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Auth; // Tambahan untuk logout
+use Illuminate\Support\Facades\Auth;
 
 // ✅ Halaman utama publik
 Route::get('/', function () {
@@ -32,11 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Admin berita dan kategori
+    // ✅ Admin berita dan kategori
     Route::resource('kategori', KategoriController::class);
     Route::resource('berita', BeritaController::class)->parameters([
         'berita' => 'berita'
     ]);
+
+    // ✅ Route data grafik untuk dashboard (Chart.js)
+    Route::get('/dashboard/chart-data', [DashboardController::class, 'chartData'])->name('dashboard.chart');
 });
 
 // ✅ Route logout manual (POST)

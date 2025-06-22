@@ -13,8 +13,19 @@ class DashboardController extends Controller
     {
         $jumlahBerita = Berita::count();
         $jumlahKategori = Kategori::count();
-        $jumlahUser = User::count(); // kalau pakai auth
+        $jumlahUser = User::count();
 
         return view('dashboard', compact('jumlahBerita', 'jumlahKategori', 'jumlahUser'));
+    }
+
+    public function chartData()
+    {
+        $data = Berita::whereNotNull('tanggal')
+            ->selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')
+            ->groupByRaw('MONTH(tanggal)')
+            ->orderByRaw('MONTH(tanggal)')
+            ->get();
+
+        return response()->json($data);
     }
 }
