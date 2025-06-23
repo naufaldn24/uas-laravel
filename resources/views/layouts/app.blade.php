@@ -45,6 +45,13 @@
                     <i class="fas fa-tags w-5"></i>
                     <span class="ml-3">Kategori</span>
                 </a>
+
+                
+                <a href="/petugas" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 ">
+    <i class="fas fa-user-tie w-5 h-5"></i>
+    <span class="ml-3">Petugas</span>
+</a>
+            </li>
             </nav>
 
             {{-- Footer Sidebar --}}

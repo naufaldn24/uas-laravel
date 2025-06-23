@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PetugasController;
 use Illuminate\Support\Facades\Auth;
 
 // ✅ Halaman utama publik
@@ -50,3 +51,12 @@ Route::post('/logout', function () {
 
 // ✅ Autentikasi Laravel Breeze / Jetstream
 require __DIR__ . '/auth.php';
+
+//route tabel user
+Route::resource('petugas', PetugasController::class);
+
+//autuh role
+Route::middleware(['auth'])->group(function () { // Hapus 'role:admin' sementara
+    Route::resource('petugas', App\Http\Controllers\PetugasController::class);
+
+});
