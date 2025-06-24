@@ -1,17 +1,16 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PetugasController;
-use Illuminate\Support\Facades\Auth;
 
-// ✅ Halaman utama publik
-Route::get('/', function () {
-    return view('frontend.home');
-});
+// ✅ Halaman utama publik (pakai controller)
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // ✅ Halaman publik tambahan (statis)
 Route::view('/profil', 'frontend.profil')->name('profil');
@@ -29,17 +28,17 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 // ✅ Semua route admin hanya untuk user yang login
 Route::middleware('auth')->group(function () {
+    // Profil user
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // ✅ Admin berita dan kategori
+    // Admin konten
     Route::resource('kategori', KategoriController::class);
-    Route::resource('berita', BeritaController::class)->parameters([
-        'berita' => 'berita'
-    ]);
+    Route::resource('berita', BeritaController::class);
+    Route::resource('petugas', PetugasController::class);
 
-    // ✅ Route data grafik untuk dashboard (Chart.js)
+    // Chart dashboard
     Route::get('/dashboard/chart-data', [DashboardController::class, 'chartData'])->name('dashboard.chart');
 });
 
@@ -51,12 +50,3 @@ Route::post('/logout', function () {
 
 // ✅ Autentikasi Laravel Breeze / Jetstream
 require __DIR__ . '/auth.php';
-
-//route tabel user
-Route::resource('petugas', PetugasController::class);
-
-//autuh role
-Route::middleware(['auth'])->group(function () { // Hapus 'role:admin' sementara
-    Route::resource('petugas', App\Http\Controllers\PetugasController::class);
-
-});

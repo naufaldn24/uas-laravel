@@ -116,7 +116,7 @@ class BeritaController extends Controller
     // ✅ Tambahan: untuk menampilkan berita publik ke frontend
     public function publicIndex()
     {
-        $beritas = Berita::with('kategori')->latest()->paginate(4);
+        $beritas = Berita::with('kategori')->latest()->paginate(6);
         return view('frontend.berita', compact('beritas'));
     }
 
