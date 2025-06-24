@@ -19,18 +19,10 @@ return new class extends Migration
             $table->text('isi');
             $table->string('penulis')->nullable();
             $table->date('tanggal');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
-            Schema::create('berita', function (Blueprint $table) {
-                // ...
-                $table->foreignId('user_id')->constrained('users'); // Ini defaultnya NO ACTION/RESTRICT
-                // ATAU ubah menjadi:
-                $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Jika user dihapus, beritanya ikut terhapus
-                // ATAU
-                // $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null'); // Jika user dihapus, user_id di berita jadi NULL
-            });
         });
     }
-
 
     /**
      * Reverse the migrations.
