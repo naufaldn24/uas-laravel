@@ -15,7 +15,6 @@ module.exports = {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                // Optional: tambahin warna custom kalau mau
                 primary: {
                     DEFAULT: "#1e40af", // biru tua
                     light: "#60a5fa",
@@ -27,7 +26,7 @@ module.exports = {
 
     plugins: [
         require("@tailwindcss/forms"),
-        require("@tailwindcss/typography"),
+        require("@tailwindcss/typography"),     // ✅ plugin typography dipasang
         require("@tailwindcss/line-clamp"),
         require("@tailwindcss/aspect-ratio"),
     ],
