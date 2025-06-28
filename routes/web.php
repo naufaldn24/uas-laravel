@@ -13,8 +13,8 @@ use App\Http\Controllers\PetugasController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // ✅ Halaman publik tambahan (statis)
-Route::view('/profil', 'frontend.profil')->name('profil');
-Route::view('/visi-misi', 'frontend.visi-misi')->name('visi-misi');
+Route::get('/profil', [HomeController::class, 'profil'])->name('profil');
+Route::get('/visi-misi', [HomeController::class, 'visiMisi'])->name('visi-misi');
 Route::view('/kontak', 'frontend.kontak')->name('kontak');
 
 // ✅ Halaman publik berita (mengambil dari database)
@@ -35,7 +35,9 @@ Route::middleware('auth')->group(function () {
 
     // Admin konten
     Route::resource('kategori', KategoriController::class);
-    Route::resource('berita', BeritaController::class);
+    Route::resource('berita', BeritaController::class)->parameters([
+        'berita' => 'berita'
+    ]);
     Route::resource('petugas', PetugasController::class);
 
     // Chart dashboard

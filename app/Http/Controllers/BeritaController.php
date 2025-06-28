@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
@@ -23,7 +23,6 @@ class BeritaController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
@@ -32,27 +31,20 @@ class BeritaController extends Controller
             'kategori_id' => 'required|exists:kategoris,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        $imagePath = null; // Inisialisasi dengan null
+        $imagePath = null;
 
         if ($request->hasFile('image')) {
-            // Ini adalah bagian KRITIS untuk menyimpan gambar dan mendapatkan PATH yang benar
             $imagePath = $request->file('image')->store('berita_images', 'public');
-            // 'berita_images' adalah subfolder di dalam storage/app/public
-            // dd($imagePath);
-            // 'public' adalah disk storage yang mengarah ke storage/app/public
-            // $imagePath akan berisi string seperti 'berita_images/nama_unik_file.jpg'
         }
-       
+
         Berita::create([
             'judul' => $request->judul,
-            'isi' => $request->isi, // Pastikan 'isi' juga disimpan
+            'isi' => $request->isi,
             'penulis' => $request->penulis,
             'tanggal' => $request->tanggal,
             'kategori_id' => $request->kategori_id,
-            'image' => $imagePath, // Pastikan ini $imagePath, yang berisi path relatif
+            'image' => $imagePath,
         ]);
-
-        // Berita::create($request->all());
 
         return redirect()->route('berita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
@@ -73,18 +65,16 @@ class BeritaController extends Controller
             'tanggal' => 'required|date',
             'kategori_id' => 'required|exists:kategoris,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-
         ]);
-        $imagePath = $berita->image; // Pertahankan gambar yang sudah ada secara default
+
+        $imagePath = $berita->image;
 
         if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
             if ($berita->image) {
                 Storage::disk('public')->delete($berita->image);
             }
-            // Simpan gambar baru
             $imagePath = $request->file('image')->store('berita_images', 'public');
-        } elseif ($request->input('remove_image')) { // Opsional: Tambahkan checkbox untuk menghapus gambar
+        } elseif ($request->input('remove_image')) {
             if ($berita->image) {
                 Storage::disk('public')->delete($berita->image);
             }
@@ -99,7 +89,6 @@ class BeritaController extends Controller
             'image' => $imagePath,
         ]);
 
-
         $berita->fill($request->only(['judul', 'isi', 'penulis', 'tanggal', 'kategori_id']));
         $berita->save();
 
@@ -108,23 +97,35 @@ class BeritaController extends Controller
 
     public function destroy(Berita $berita)
     {
+        if ($berita->image) {
+            Storage::disk('public')->delete($berita->image);
+        }
         $berita->delete();
 
         return redirect()->route('berita.index')->with('success', 'Berita berhasil dihapus.');
     }
 
-    // ✅ Tambahan: untuk menampilkan berita publik ke frontend
+    // Metode untuk menampilkan daftar berita publik
     public function publicIndex()
     {
         $beritas = Berita::with('kategori')->latest()->paginate(6);
         return view('frontend.berita', compact('beritas'));
     }
 
-
+    // Metode untuk menampilkan detail berita publik
     public function showPublic($slug)
     {
+        // Cari berita berdasarkan slug
         $berita = Berita::where('slug', $slug)->with('kategori')->firstOrFail();
-        return view('frontend.berita-show', compact('berita'));
+
+        // Ambil 5 berita terbaru lainnya, kecuali berita yang sedang dilihat
+        // Gunakan where('id', '!=', $berita->id) untuk mengecualikan berita saat ini
+        $otherBeritas = Berita::where('id', '!=', $berita->id)
+            ->latest()
+            ->limit(5) // Ambil 5 berita terbaru
+            ->get();
+
+        // Kirim berita dan berita lainnya ke view
+        return view('frontend.berita-show', compact('berita', 'otherBeritas'));
     }
-    
 }

@@ -16,6 +16,7 @@
                 <tr class="text-sm text-blue-800 font-semibold text-left">
                     <th class="px-4 py-3">#</th>
                     <th class="px-4 py-3">Judul</th>
+                    <th class="px-4 py-3">Penulis</th>
                     <th class="px-4 py-3">Kategori</th>
                     <th class="px-4 py-3">Tanggal</th>
                     <th class="px-4 py-3">Gambar</th>
@@ -27,6 +28,7 @@
                         <tr class="hover:bg-gray-50">
                             <td class="py-2 px-4 border-b">{{ $index + 1 }}</td>
                             <td class="py-2 px-4 border-b">{{ $berita->judul }}</td>
+                            <td class="py-2 px-4 border-b">{{ $berita->penulis }}</td>
                             <td class="py-2 px-4 border-b">{{ $berita->kategori->nama ?? '-' }}</td>
                             <td class="py-2 px-4 border-b">
                                 {{ \Carbon\Carbon::parse($berita->tanggal)->translatedFormat('d M Y') }}
