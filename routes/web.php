@@ -8,6 +8,7 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PetugasController;
+use App\Http\Controllers\EventController;
 
 // ✅ Halaman utama publik (pakai controller)
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -52,3 +53,6 @@ Route::post('/logout', function () {
 
 // ✅ Autentikasi Laravel Breeze / Jetstream
 require __DIR__ . '/auth.php';
+
+// Tambahkan rute untuk Event
+Route::resource('events', EventController::class);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Berita;
 use App\Models\Kategori;
 use App\Models\User;
+use App\Models\Event;
 
 class DashboardController extends Controller
 {
