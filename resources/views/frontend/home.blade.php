@@ -12,7 +12,7 @@
                     <span class="text-white drop-shadow-2xl">Selamat Datang di</span><br>
                     <span
                         class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 drop-shadow-lg font-extrabold">SMP
-                        Negeri 123</span>
+                        Negeri 123 Malang</span>
                 </h1>
                 <p
                     class="mt-6 text-white text-xl font-semibold drop-shadow-lg leading-relaxed bg-black/30 backdrop-blur-sm px-6 py-4 rounded-xl border border-white/20">
