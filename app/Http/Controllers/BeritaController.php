@@ -38,6 +38,7 @@ class BeritaController extends Controller
         }
 
         Berita::create([
+            'user_id' => 1,
             'judul' => $request->judul,
             'isi' => $request->isi,
             'penulis' => $request->penulis,
